@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+}
+
+<html>
+
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body class="sub_page">
+
+    @await Component.InvokeAsync("_MenuNavbarComponentPartial")
+
+    <section class="food_section layout_padding">
+        <div class="container">
+
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="text-center mb-4">B&K Restoran Anlık Mesajlaşma</h3>
+                    </div>
+                </div>
+
+                <div class="row p-1">
+                    <div class="col-2">Kullanıcı Adınız:</div>
+                    <div class="col-5">
+                        <input type="text" id="userinput" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row p-1">
+                    <div class="col-2">Mesajınız:</div>
+                    <div class="col-5">
+                        <input type="text" class="form-control" id="messageinput" />
+                    </div>
+                </div>
+
+                <div class="row p-1">
+                    <div class="col-2"></div>
+                    <div class="col-3">
+                        <input type="button" id="sendbutton" value="Mesaj Gönder" class="btn btn-warning" />
+                    </div>
+                </div>
+
+                <div class="row p-1">
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                </div>
+
+                <div class="row p-1">
+                    <div class="col-12">
+                        <ul id="messagelist" class="list-group"></ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    @await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+
+    @await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.8/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/chat.js"></script>
+
+    <script>
+        document.getElementById('sendbutton').addEventListener('click', function () {
+            const userName = document.getElementById('userinput').value;
+            const message = document.getElementById('messageinput').value;
+
+            if (userName === '' || message === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Lütfen tüm alanları doldurunuz!',
+                });
+            } else {
+                // SweetAlert başarı mesajı
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Mesaj Gönderildi!',
+                    text: 'Mesajınız başarıyla gönderildi!',
+                });
+
+                // Buraya mesajı listeye ekleme ve SignalR kodu gelebilir
+                // Örnek: mesajı ekleme kodu
+                const listItem = document.createElement('li');
+                listItem.textContent = userName + ": " + message;
+                document.getElementById('messagelist').appendChild(listItem);
+
+                // Alanları temizle
+                document.getElementById('userinput').value = '';
+                document.getElementById('messageinput').value = '';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
